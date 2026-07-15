@@ -1,10 +1,12 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from http import HTTPStatus
 from typing import Any, Dict, Optional
 
-from .services.langgraph_agent import build_interaction_plan
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
+from backend.app.services.langgraph_agent import build_interaction_plan
 
 app = FastAPI(title="AI-first HCP CRM", version="1.0.0")
 
@@ -34,6 +36,7 @@ def health() -> Dict[str, Any]:
 
 
 @app.post("/api/interaction")
+@app.post("/")
 def log_interaction(payload: InteractionRequest) -> Dict[str, Any]:
     structured_payload = {
         "hcp_name": payload.hcp_name or "Unknown HCP",
@@ -46,4 +49,4 @@ def log_interaction(payload: InteractionRequest) -> Dict[str, Any]:
     }
     raw_input = payload.chat_message or ""
     result = build_interaction_plan(structured_payload, raw_input)
-    return {"success": True, **result}
+    return JSONResponse(status_code=HTTPStatus.OK, content={"success": True, **result})

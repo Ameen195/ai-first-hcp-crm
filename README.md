@@ -40,6 +40,13 @@ npm start
 
 Open http://localhost:3000 to use the app.
 
+## Demo
+
+1. Open the app in the browser.
+2. Enter an HCP name, specialty, objective, and notes.
+3. Submit the form to trigger the LangGraph workflow.
+4. Review the generated CRM summary, tool usage, and recommended next step.
+
 ## LangGraph tools included
 
 1. lookup_hcp_profile

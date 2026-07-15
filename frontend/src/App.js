@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:8000/api' : `${window.location.origin}/api`);
+
 function App() {
   const dispatch = useDispatch();
   const { interaction, loading, error } = useSelector((state) => state);
@@ -25,15 +27,18 @@ function App() {
     event.preventDefault();
     dispatch({ type: 'interaction/loading' });
     try {
-      const response = await fetch('http://localhost:8000/api/interaction', {
+      const response = await fetch(`${API_BASE_URL}/interaction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
       const data = await response.json();
       dispatch({ type: 'interaction/success', payload: data });
     } catch (err) {
-      dispatch({ type: 'interaction/error', payload: 'Unable to reach backend service.' });
+      dispatch({ type: 'interaction/error', payload: err.message || 'Unable to reach backend service.' });
     }
   };
 
