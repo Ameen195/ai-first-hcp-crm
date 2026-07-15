@@ -30,13 +30,14 @@ class InteractionRequest(BaseModel):
     chat_message: Optional[str] = None
 
 
+@app.get("/")
 @app.get("/api/health")
 def health() -> Dict[str, Any]:
     return {"status": "ok", "service": "ai-first-hcp-crm"}
 
 
-@app.post("/api/interaction")
 @app.post("/")
+@app.post("/api/interaction")
 def log_interaction(payload: InteractionRequest) -> Dict[str, Any]:
     structured_payload = {
         "hcp_name": payload.hcp_name or "Unknown HCP",

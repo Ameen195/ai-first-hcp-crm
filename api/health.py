@@ -14,5 +14,6 @@ app.add_middleware(
 )
 
 @app.get("/")
+@app.get("/api/health")
 def health():
     return JSONResponse(status_code=HTTPStatus.OK, content={"status": "ok", "service": "ai-first-hcp-crm"})
