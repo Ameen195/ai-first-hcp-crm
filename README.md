@@ -38,7 +38,6 @@ npm install
 npm start
 ```
 
-Open http://localhost:3000 to use the app.
 
 ## Demo
 
